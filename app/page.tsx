@@ -138,6 +138,17 @@ export default function Home() {
             </p>
           </div>
 
+          <form className="mt-8 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+            <div className="grid gap-5 md:grid-cols-2">
+              <label className="block">
+                <span className="text-sm font-semibold text-slate-700">
+                  Type
+                </span>
+                <select
+                  name="type"
+                  className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-slate-950 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                  defaultValue="Expense"
+                >
                   <option>Income</option>
                   <option>Expense</option>
                 </select>
@@ -152,18 +163,7 @@ export default function Home() {
                   type="number"
                   min="0"
                   step="0.01"
-                  p
-          <form className="mt-8 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-            <div className="grid gap-5 md:grid-cols-2">
-              <label className="block">
-                <span className="text-sm font-semibold text-slate-700">
-                  Type
-                </span>
-                <select
-                  name="type"
-                  className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-slate-950 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
-                  defaultValue="Expense"
-                >laceholder="0.00"
+                  placeholder="0.00"
                   className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
                 />
               </label>
