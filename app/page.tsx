@@ -22,6 +22,16 @@ const stats = [
   { label: "Remaining Budget", value: "€350" },
 ];
 
+const transactionCategories = [
+  "Rent",
+  "Groceries",
+  "Transport",
+  "Course Materials",
+  "Part-time Work",
+  "Grant",
+  "Other",
+];
+
 export default function Home() {
   return (
     <main className="min-h-screen bg-slate-50 text-slate-950">
@@ -110,6 +120,102 @@ export default function Home() {
               </p>
             </article>
           ))}
+        </div>
+      </section>
+
+      <section className="bg-slate-50 px-6 py-16 sm:px-8 lg:px-10">
+        <div className="mx-auto max-w-6xl">
+          <div className="max-w-2xl">
+            <p className="text-sm font-semibold uppercase tracking-wide text-emerald-700">
+              Add Transaction
+            </p>
+            <h2 className="mt-2 text-3xl font-bold tracking-tight text-slate-950">
+              Record income or spending
+            </h2>
+            <p className="mt-3 leading-7 text-slate-600">
+              Add the details for a student budget item. This form is a simple
+              interface preview for now and does not save data yet.
+            </p>
+          </div>
+
+                  <option>Income</option>
+                  <option>Expense</option>
+                </select>
+              </label>
+
+              <label className="block">
+                <span className="text-sm font-semibold text-slate-700">
+                  Amount
+                </span>
+                <input
+                  name="amount"
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  p
+          <form className="mt-8 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+            <div className="grid gap-5 md:grid-cols-2">
+              <label className="block">
+                <span className="text-sm font-semibold text-slate-700">
+                  Type
+                </span>
+                <select
+                  name="type"
+                  className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-slate-950 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                  defaultValue="Expense"
+                >laceholder="0.00"
+                  className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                />
+              </label>
+
+              <label className="block">
+                <span className="text-sm font-semibold text-slate-700">
+                  Category
+                </span>
+                <select
+                  name="category"
+                  className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-slate-950 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                  defaultValue="Groceries"
+                >
+                  {transactionCategories.map((category) => (
+                    <option key={category}>{category}</option>
+                  ))}
+                </select>
+              </label>
+
+              <label className="block">
+                <span className="text-sm font-semibold text-slate-700">
+                  Date
+                </span>
+                <input
+                  name="date"
+                  type="date"
+                  className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-slate-950 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                />
+              </label>
+
+              <label className="block md:col-span-2">
+                <span className="text-sm font-semibold text-slate-700">
+                  Note
+                </span>
+                <input
+                  name="note"
+                  type="text"
+                  placeholder="Optional note"
+                  className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                />
+              </label>
+            </div>
+
+            <div className="mt-6 flex justify-end">
+              <button
+                type="submit"
+                className="rounded-lg bg-emerald-600 px-6 py-3 text-base font-semibold text-white shadow-sm shadow-emerald-900/20 transition hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
+              >
+                Add Transaction
+              </button>
+            </div>
+          </form>
         </div>
       </section>
     </main>
