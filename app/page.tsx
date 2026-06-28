@@ -1,3 +1,7 @@
+"use client";
+
+import { useState, type FormEvent } from "react";
+
 const features = [
   {
     title: "Track Expenses",
@@ -32,11 +36,43 @@ const transactionCategories = [
   "Other",
 ];
 
-/*首页内容*/
+type Transaction = {
+  id: number;
+  type: "Income" | "Expense";
+  amount: number;
+  category: string;
+  date: string;
+  note: string;
+};
+
 export default function Home() {
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+
+  function handleAddTransaction(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+
+    const newTransaction: Transaction = {
+      id: Date.now(),
+      type: formData.get("type") as Transaction["type"],
+      amount: Number(formData.get("amount")),
+      category: String(formData.get("category")),
+      date: String(formData.get("date")),
+      note: String(formData.get("note") || ""),
+    };
+
+    setTransactions((currentTransactions) => [
+      newTransaction,
+      ...currentTransactions,
+    ]);
+
+    form.reset();
+  }
+
   return (
     <main className="min-h-screen bg-slate-50 text-slate-950">
-      /*第一个section 顶部标题区 + 预算预览卡片*/
       <section className="mx-auto flex min-h-screen w-full max-w-6xl flex-col justify-center px-6 py-16 sm:px-8 lg:px-10">
         <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
           <div>
@@ -86,7 +122,6 @@ export default function Home() {
             </div>
 
             <div className="mt-6 space-y-4">
-              /*对于stats array里面的每一个stat：都生成一段页面内容*/
               {stats.map((stat) => (
                 <div
                   key={stat.label}
@@ -105,7 +140,6 @@ export default function Home() {
         </div>
       </section>
 
-      /*第二个section 三个功能介绍*/
       <section className="border-y border-slate-200 bg-white px-6 py-16 sm:px-8 lg:px-10">
         <div className="mx-auto grid max-w-6xl gap-6 md:grid-cols-3">
           {features.map((feature) => (
@@ -127,7 +161,6 @@ export default function Home() {
         </div>
       </section>
 
-      /*第三个section 添加交易表单*/
       <section className="bg-slate-50 px-6 py-16 sm:px-8 lg:px-10">
         <div className="mx-auto max-w-6xl">
           <div className="max-w-2xl">
@@ -138,14 +171,16 @@ export default function Home() {
               Record income or spending
             </h2>
             <p className="mt-3 leading-7 text-slate-600">
-              Add the details for a student budget item. This form is a simple
-              interface preview for now and does not save data yet.
+              Add the details for a student budget item. The transaction will
+              appear in the list below.
             </p>
           </div>
 
-          <form className="mt-8 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+          <form
+            onSubmit={handleAddTransaction}
+            className="mt-8 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
+          >
             <div className="grid gap-5 md:grid-cols-2">
-              /*第一项 TYPE 选择income 还是 Expense */
               <label className="block">
                 <span className="text-sm font-semibold text-slate-700">
                   Type
@@ -155,12 +190,11 @@ export default function Home() {
                   className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-slate-950 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
                   defaultValue="Expense"
                 >
-                  <option>Income</option>
-                  <option>Expense</option>
+                  <option value="Income">Income</option>
+                  <option value="Expense">Expense</option>
                 </select>
               </label>
 
-              /*第二项 Amount 输入金额 有限制 */
               <label className="block">
                 <span className="text-sm font-semibold text-slate-700">
                   Amount
@@ -171,11 +205,11 @@ export default function Home() {
                   min="0"
                   step="0.01"
                   placeholder="0.00"
+                  required
                   className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
                 />
               </label>
 
-              /*第三项 Category  */
               <label className="block">
                 <span className="text-sm font-semibold text-slate-700">
                   Category
@@ -185,9 +219,10 @@ export default function Home() {
                   className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-slate-950 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
                   defaultValue="Groceries"
                 >
-                  /*把 transactionCategories 数组里的每一个分类，都变成一个 option 下拉选项。 */
                   {transactionCategories.map((category) => (
-                    <option key={category}>{category}</option>
+                    <option key={category} value={category}>
+                      {category}
+                    </option>
                   ))}
                 </select>
               </label>
@@ -199,6 +234,7 @@ export default function Home() {
                 <input
                   name="date"
                   type="date"
+                  required
                   className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-slate-950 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
                 />
               </label>
@@ -225,6 +261,50 @@ export default function Home() {
               </button>
             </div>
           </form>
+
+          <div className="mt-10">
+            <h2 className="text-2xl font-bold tracking-tight text-slate-950">
+              Transaction List
+            </h2>
+
+            {transactions.length === 0 ? (
+              <p className="mt-4 rounded-lg border border-dashed border-slate-300 bg-white px-4 py-5 text-slate-600">
+                No transactions added yet.
+              </p>
+            ) : (
+              <div className="mt-5 space-y-4">
+                {transactions.map((transaction) => (
+                  <article
+                    key={transaction.id}
+                    className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm"
+                  >
+                    <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                      <div>
+                        <p className="text-sm font-semibold text-emerald-700">
+                          {transaction.type}
+                        </p>
+                        <h3 className="mt-1 text-lg font-bold text-slate-950">
+                          {transaction.category}
+                        </h3>
+                        <p className="mt-1 text-sm text-slate-500">
+                          {transaction.date}
+                        </p>
+                        {transaction.note ? (
+                          <p className="mt-3 text-slate-600">
+                            {transaction.note}
+                          </p>
+                        ) : null}
+                      </div>
+
+                      <p className="text-2xl font-bold text-slate-950">
+                        €{transaction.amount.toFixed(2)}
+                      </p>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </section>
     </main>
