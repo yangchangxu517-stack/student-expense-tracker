@@ -32,9 +32,11 @@ const transactionCategories = [
   "Other",
 ];
 
+/*首页内容*/
 export default function Home() {
   return (
     <main className="min-h-screen bg-slate-50 text-slate-950">
+      /*第一个section 顶部标题区 + 预算预览卡片*/
       <section className="mx-auto flex min-h-screen w-full max-w-6xl flex-col justify-center px-6 py-16 sm:px-8 lg:px-10">
         <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
           <div>
@@ -84,6 +86,7 @@ export default function Home() {
             </div>
 
             <div className="mt-6 space-y-4">
+              /*对于stats array里面的每一个stat：都生成一段页面内容*/
               {stats.map((stat) => (
                 <div
                   key={stat.label}
@@ -102,6 +105,7 @@ export default function Home() {
         </div>
       </section>
 
+      /*第二个section 三个功能介绍*/
       <section className="border-y border-slate-200 bg-white px-6 py-16 sm:px-8 lg:px-10">
         <div className="mx-auto grid max-w-6xl gap-6 md:grid-cols-3">
           {features.map((feature) => (
@@ -123,6 +127,7 @@ export default function Home() {
         </div>
       </section>
 
+      /*第三个section 添加交易表单*/
       <section className="bg-slate-50 px-6 py-16 sm:px-8 lg:px-10">
         <div className="mx-auto max-w-6xl">
           <div className="max-w-2xl">
@@ -140,6 +145,7 @@ export default function Home() {
 
           <form className="mt-8 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
             <div className="grid gap-5 md:grid-cols-2">
+              /*第一项 TYPE 选择income 还是 Expense */
               <label className="block">
                 <span className="text-sm font-semibold text-slate-700">
                   Type
@@ -154,6 +160,7 @@ export default function Home() {
                 </select>
               </label>
 
+              /*第二项 Amount 输入金额 有限制 */
               <label className="block">
                 <span className="text-sm font-semibold text-slate-700">
                   Amount
@@ -168,6 +175,7 @@ export default function Home() {
                 />
               </label>
 
+              /*第三项 Category  */
               <label className="block">
                 <span className="text-sm font-semibold text-slate-700">
                   Category
@@ -177,6 +185,7 @@ export default function Home() {
                   className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-slate-950 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
                   defaultValue="Groceries"
                 >
+                  /*把 transactionCategories 数组里的每一个分类，都变成一个 option 下拉选项。 */
                   {transactionCategories.map((category) => (
                     <option key={category}>{category}</option>
                   ))}
