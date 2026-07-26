@@ -1,7 +1,8 @@
-"use client";
+"use client"; /*这个页面需要在browser中运行 */
 
-import { useState, type FormEvent } from "react";
+import { useState, type FormEvent } from "react";  /*useState：让React有记忆*/
 
+/*把数据存起来 让下面的jsx用 */
 const features = [
   {
     title: "Track Expenses",
@@ -36,6 +37,7 @@ const transactionCategories = [
   "Other",
 ];
 
+/*定义一条transaction要长什么样 */
 type Transaction = {
   id: number;
   type: "Income" | "Expense";
@@ -45,30 +47,53 @@ type Transaction = {
   note: string;
 };
 
+/*主函数Home */
 export default function Home() {
+  
   const [transactions, setTransactions] = useState<Transaction[]>([]);
 
-  function handleAddTransaction(event: FormEvent<HTMLFormElement>) {
+  const totalExpenses = transactions
+    .filter((transaction) => transaction.type === "Expense")
+    .reduce((total, transaction) => total + transaction.amount, 0);
+
+/*1. 创建一个 state 存储位置
+2. 把初始值 [] 放进去
+3. 返回两个东西：[当前值, 修改函数] */
+
+  
+/*处理添加一笔收入/支出的函数 */
+function handleAddTransaction(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     const form = event.currentTarget;
-    const formData = new FormData(form);
+    const formData = new FormData(form); /**FormData是浏览器中自带的工具 用于收集表单字段 */
 
+    /**规定newTransaction必须是之前定义的Transaction类型 */
     const newTransaction: Transaction = {
-      id: Date.now(),
-      type: formData.get("type") as Transaction["type"],
+      id: Date.now(),/*获取当前时间，当作transaction的编号 */
+      type: formData.get("type") as Transaction["type"],/*获取叫做type的字段(income/expense)；后面as Transaction["type"]是 TypeScript 的类型断言.因为 formData.get("type") 在 TypeScript 看来可能是很多种东西，不一定刚好是 "Income" 或 "Expense"。 */
+      /*number string 规定类型 */
       amount: Number(formData.get("amount")),
       category: String(formData.get("category")),
       date: String(formData.get("date")),
       note: String(formData.get("note") || ""),
     };
 
+    /*更新交易列表 */
     setTransactions((currentTransactions) => [
       newTransaction,
       ...currentTransactions,
     ]);
 
     form.reset();
+  }
+
+  /**增加删除功能 */
+  function handleDeleteTransaction(id: number) {
+    setTransactions((currentTransactions) =>
+      /**删掉transaction.id !== id的 其他的记录不动保留下来 */
+      currentTransactions.filter((transaction) => transaction.id !== id)
+    );
   }
 
   return (
@@ -122,7 +147,8 @@ export default function Home() {
             </div>
 
             <div className="mt-6 space-y-4">
-              {stats.map((stat) => (
+              {stats.map((stat) => ( /*stats中的每一项生成一个页面(label + value) */
+                                      /*eg: Monthly Income    1200 */
                 <div
                   key={stat.label}
                   className="flex items-center justify-between rounded-lg bg-slate-50 px-4 py-4"
@@ -131,7 +157,9 @@ export default function Home() {
                     {stat.label}
                   </span>
                   <span className="text-xl font-bold text-slate-950">
-                    {stat.value}
+                    {stat.label === "Monthly Expenses"
+                      ? `€${totalExpenses.toFixed(2)}`
+                      : stat.value}
                   </span>
                 </div>
               ))}
@@ -143,6 +171,7 @@ export default function Home() {
       <section className="border-y border-slate-200 bg-white px-6 py-16 sm:px-8 lg:px-10">
         <div className="mx-auto grid max-w-6xl gap-6 md:grid-cols-3">
           {features.map((feature) => (
+            /*features 中的每一个feature 都转换为一个新的页面<article> ... </article>* */
             <article
               key={feature.title}
               className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm"
@@ -261,17 +290,24 @@ export default function Home() {
               </button>
             </div>
           </form>
-
           <div className="mt-10">
             <h2 className="text-2xl font-bold tracking-tight text-slate-950">
               Transaction List
             </h2>
-
-            {transactions.length === 0 ? (
+            
+            {/*如果没有交易记录，就显示 “No transactions added yet.”如果有交易记录，就显示交易列表 */}
+            
+            {transactions.length === 0 ? 
+            
+            /*若长度为0* */
+            (
               <p className="mt-4 rounded-lg border border-dashed border-slate-300 bg-white px-4 py-5 text-slate-600">
                 No transactions added yet.
               </p>
-            ) : (
+            ) : 
+            
+            /*否则：交易记录继续转化为新的页面* */
+            (
               <div className="mt-5 space-y-4">
                 {transactions.map((transaction) => (
                   <article
@@ -296,9 +332,23 @@ export default function Home() {
                         ) : null}
                       </div>
 
-                      <p className="text-2xl font-bold text-slate-950">
-                        €{transaction.amount.toFixed(2)}
-                      </p>
+                      <div className="flex items-center gap-3">
+                        <p className="text-2xl font-bold text-slate-950">
+                          €{transaction.amount.toFixed(2)}
+                        </p>
+                        
+                        {/*新增一个按钮delete在transaction旁边* */}
+                        <button
+                          type="button"
+                          onClick={() =>
+                            handleDeleteTransaction(transaction.id)
+                          }
+                          className="rounded-lg border border-red-200 px-3 py-2 text-sm font-semibold text-red-600 transition hover:bg-red-50"
+                        >
+                          Delete
+                        
+                        </button>
+                      </div>
                     </div>
                   </article>
                 ))}
