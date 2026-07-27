@@ -56,6 +56,10 @@ export default function Home() {
     .filter((transaction) => transaction.type === "Expense")
     .reduce((total, transaction) => total + transaction.amount, 0);
 
+  const totalIncome = transactions
+    .filter((transaction) => transaction.type === "Income")
+    .reduce((total, transaction) => total + transaction.amount, 0);
+
 /*1. 创建一个 state 存储位置
 2. 把初始值 [] 放进去
 3. 返回两个东西：[当前值, 修改函数] */
@@ -157,9 +161,11 @@ function handleAddTransaction(event: FormEvent<HTMLFormElement>) {
                     {stat.label}
                   </span>
                   <span className="text-xl font-bold text-slate-950">
-                    {stat.label === "Monthly Expenses"
-                      ? `€${totalExpenses.toFixed(2)}`
-                      : stat.value}
+                    {stat.label === "Monthly Income"
+                      ? `€${totalIncome.toFixed(2)}`
+                      : stat.label === "Monthly Expenses"
+                        ? `€${totalExpenses.toFixed(2)}`
+                        : stat.value}
                   </span>
                 </div>
               ))}
