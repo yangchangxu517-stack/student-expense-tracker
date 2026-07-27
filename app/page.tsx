@@ -60,6 +60,8 @@ export default function Home() {
     .filter((transaction) => transaction.type === "Income")
     .reduce((total, transaction) => total + transaction.amount, 0);
 
+  const remainingBudget = totalIncome - totalExpenses;
+
 /*1. 创建一个 state 存储位置
 2. 把初始值 [] 放进去
 3. 返回两个东西：[当前值, 修改函数] */
@@ -165,7 +167,9 @@ function handleAddTransaction(event: FormEvent<HTMLFormElement>) {
                       ? `€${totalIncome.toFixed(2)}`
                       : stat.label === "Monthly Expenses"
                         ? `€${totalExpenses.toFixed(2)}`
-                        : stat.value}
+                        : stat.label === "Remaining Budget"
+                          ? `€${remainingBudget.toFixed(2)}`
+                          : stat.value}
                   </span>
                 </div>
               ))}
