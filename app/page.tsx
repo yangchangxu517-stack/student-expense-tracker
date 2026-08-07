@@ -1,6 +1,6 @@
 "use client"; /*这个页面需要在browser中运行 */
 
-import { useState, type FormEvent } from "react";  /*useState：让React有记忆*/
+import { useEffect, useState, type FormEvent } from "react";  /*useState：让React有记忆*/
 
 /*把数据存起来 让下面的jsx用 */
 const features = [
@@ -50,7 +50,19 @@ type Transaction = {
 /*主函数Home */
 export default function Home() {
   
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [transactions, setTransactions] = useState<Transaction[]>(() => {
+    if (typeof window === "undefined") {
+      return [];
+    }
+
+    const savedTransactions = localStorage.getItem("transactions");
+
+    if (savedTransactions) {
+      return JSON.parse(savedTransactions) as Transaction[];
+    }
+
+    return [];
+  });
 
   const totalExpenses = transactions
     .filter((transaction) => transaction.type === "Expense")
@@ -61,6 +73,10 @@ export default function Home() {
     .reduce((total, transaction) => total + transaction.amount, 0);
 
   const remainingBudget = totalIncome - totalExpenses;
+
+  useEffect(() => {
+    localStorage.setItem("transactions", JSON.stringify(transactions));
+  }, [transactions]);
 
 /*1. 创建一个 state 存储位置
 2. 把初始值 [] 放进去
