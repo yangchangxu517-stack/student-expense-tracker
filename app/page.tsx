@@ -112,13 +112,26 @@ function handleAddTransaction(event: FormEvent<HTMLFormElement>) {
 
   /**增加删除功能 */
   function handleDeleteTransaction(id: number) {
+    const confirmed = window.confirm("Delete this transaction?");
+
+    if (!confirmed) {
+      return;
+    }
+
     setTransactions((currentTransactions) =>
       /**删掉transaction.id !== id的 其他的记录不动保留下来 */
       currentTransactions.filter((transaction) => transaction.id !== id)
     );
   }
 
+  /*增加一键删除功能* */
   function handleClearAllTransactions() {
+    const confirmed = window.confirm("Clear all transactions?");
+
+    if (!confirmed) {
+      return;
+    }
+
     setTransactions([]);
   }
 
@@ -326,7 +339,7 @@ function handleAddTransaction(event: FormEvent<HTMLFormElement>) {
                 Transaction List
               </h2>
 
-              {transactions.length > 0 ? (
+              {transactions.length > 0 ? (  /**transactions数量需要大于0才会显示clear all按钮 */
                 <button
                   type="button"
                   onClick={handleClearAllTransactions}
