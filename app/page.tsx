@@ -118,6 +118,10 @@ function handleAddTransaction(event: FormEvent<HTMLFormElement>) {
     );
   }
 
+  function handleClearAllTransactions() {
+    setTransactions([]);
+  }
+
   return (
     <main className="min-h-screen bg-slate-50 text-slate-950">
       <section className="mx-auto flex min-h-screen w-full max-w-6xl flex-col justify-center px-6 py-16 sm:px-8 lg:px-10">
@@ -317,9 +321,21 @@ function handleAddTransaction(event: FormEvent<HTMLFormElement>) {
             </div>
           </form>
           <div className="mt-10">
-            <h2 className="text-2xl font-bold tracking-tight text-slate-950">
-              Transaction List
-            </h2>
+            <div className="flex items-center justify-between gap-4">
+              <h2 className="text-2xl font-bold tracking-tight text-slate-950">
+                Transaction List
+              </h2>
+
+              {transactions.length > 0 ? (
+                <button
+                  type="button"
+                  onClick={handleClearAllTransactions}
+                  className="rounded-lg border border-red-200 px-3 py-2 text-sm font-semibold text-red-600 transition hover:bg-red-50"
+                >
+                  Clear All
+                </button>
+              ) : null}
+            </div>
             
             {/*如果没有交易记录，就显示 “No transactions added yet.”如果有交易记录，就显示交易列表 */}
             
