@@ -63,6 +63,7 @@ export default function Home() {
 
     return [];
   });
+  const [selectedCategory, setSelectedCategory] = useState("All Categories");
 
   const totalExpenses = transactions
     .filter((transaction) => transaction.type === "Expense")
@@ -73,6 +74,13 @@ export default function Home() {
     .reduce((total, transaction) => total + transaction.amount, 0);
 
   const remainingBudget = totalIncome - totalExpenses;
+
+  const filteredTransactions =
+    selectedCategory === "All Categories"
+      ? transactions
+      : transactions.filter(
+          (transaction) => transaction.category === selectedCategory
+        );
 
   useEffect(() => {
     localStorage.setItem("transactions", JSON.stringify(transactions));
@@ -339,6 +347,19 @@ function handleAddTransaction(event: FormEvent<HTMLFormElement>) {
                 Transaction List
               </h2>
 
+              <select
+                value={selectedCategory}
+                onChange={(event) => setSelectedCategory(event.target.value)}
+                className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+              >
+                <option value="All Categories">All Categories</option>
+                {transactionCategories.map((category) => (
+                  <option key={category} value={category}>
+                    {category}
+                  </option>
+                ))}
+              </select>
+
               {transactions.length > 0 ? (  /**transactions数量需要大于0才会显示clear all按钮 */
                 <button
                   type="button"
@@ -364,7 +385,7 @@ function handleAddTransaction(event: FormEvent<HTMLFormElement>) {
             /*否则：交易记录继续转化为新的页面* */
             (
               <div className="mt-5 space-y-4">
-                {transactions.map((transaction) => (
+                {filteredTransactions.map((transaction) => (
                   <article
                     key={transaction.id}
                     className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm"
