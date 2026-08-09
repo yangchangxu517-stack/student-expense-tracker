@@ -144,6 +144,49 @@ function handleAddTransaction(event: FormEvent<HTMLFormElement>) {
     setTransactions([]);
   }
 
+  function handleViewExample() {
+    const today = "2026-08-09";
+    const exampleTransactions: Transaction[] = [
+      {
+        id: Date.now(),
+        type: "Income",
+        amount: 1200,
+        category: "Part-time Work",
+        date: today,
+        note: "Example part-time income",
+      },
+      {
+        id: Date.now() + 1,
+        type: "Expense",
+        amount: 450,
+        category: "Rent",
+        date: today,
+        note: "Example rent payment",
+      },
+      {
+        id: Date.now() + 2,
+        type: "Expense",
+        amount: 85,
+        category: "Groceries",
+        date: today,
+        note: "Example grocery shop",
+      },
+      {
+        id: Date.now() + 3,
+        type: "Expense",
+        amount: 35,
+        category: "Transport",
+        date: today,
+        note: "Example transport top-up",
+      },
+    ];
+
+    setTransactions((currentTransactions) => [
+      ...exampleTransactions,
+      ...currentTransactions,
+    ]);
+  }
+
   return (
     <main className="min-h-screen bg-slate-50 text-slate-950">
       <section className="mx-auto flex min-h-screen w-full max-w-6xl flex-col justify-center px-6 py-16 sm:px-8 lg:px-10">
@@ -177,6 +220,7 @@ function handleAddTransaction(event: FormEvent<HTMLFormElement>) {
 
               <button
                 type="button"
+                onClick={handleViewExample}
                 className="rounded-lg border border-slate-300 bg-white px-6 py-3 text-base font-semibold text-slate-900 transition hover:border-slate-400 hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2"
               >
                 View Example
