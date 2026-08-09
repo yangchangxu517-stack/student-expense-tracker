@@ -65,6 +65,7 @@ export default function Home() {
   });
   
   const [selectedCategory, setSelectedCategory] = useState("All Categories");/**记录用户选了哪个category */
+  const [selectedSort, setSelectedSort] = useState("Newest First");
 
   const totalExpenses = transactions        /*自动计算每月支出 */
     .filter((transaction) => transaction.type === "Expense")
@@ -76,12 +77,40 @@ export default function Home() {
 
   const remainingBudget = totalIncome - totalExpenses;   /**自动计算剩余预算 */
 
+  const currentMonthName = new Date().toLocaleString("en-US", {
+    month: "long",
+  });
+
   const filteredTransactions =                          /**过滤出selectedCategory的transaction */
     selectedCategory === "All Categories"
       ? transactions
       : transactions.filter(
           (transaction) => transaction.category === selectedCategory
         );
+
+  const sortedTransactions = [...filteredTransactions].sort(
+    (firstTransaction, secondTransaction) => {
+      if (selectedSort === "Oldest First") {
+        return (
+          new Date(firstTransaction.date).getTime() -
+          new Date(secondTransaction.date).getTime()
+        );
+      }
+
+      if (selectedSort === "Highest Amount") {
+        return secondTransaction.amount - firstTransaction.amount;
+      }
+
+      if (selectedSort === "Lowest Amount") {
+        return firstTransaction.amount - secondTransaction.amount;
+      }
+
+      return (
+        new Date(secondTransaction.date).getTime() -
+        new Date(firstTransaction.date).getTime()
+      );
+    }
+  );
 
   useEffect(() => {
     localStorage.setItem("transactions", JSON.stringify(transactions));
@@ -235,7 +264,7 @@ function handleAddTransaction(event: FormEvent<HTMLFormElement>) {
                   Budget Preview
                 </p>
                 <h2 className="mt-1 text-2xl font-bold text-slate-950">
-                  June Overview
+                  {currentMonthName} Overview
                 </h2>
               </div>
               <span className="rounded-full bg-emerald-100 px-3 py-1 text-sm font-semibold text-emerald-700">
@@ -413,6 +442,17 @@ function handleAddTransaction(event: FormEvent<HTMLFormElement>) {
                 ))}
               </select>
 
+              <select
+                value={selectedSort}
+                onChange={(event) => setSelectedSort(event.target.value)}
+                className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+              >
+                <option value="Newest First">Newest First</option>
+                <option value="Oldest First">Oldest First</option>
+                <option value="Highest Amount">Highest Amount</option>
+                <option value="Lowest Amount">Lowest Amount</option>
+              </select>
+
               {transactions.length > 0 ? (  /**transactions数量需要大于0才会显示clear all按钮 */
                 <button
                   type="button"
@@ -443,7 +483,7 @@ function handleAddTransaction(event: FormEvent<HTMLFormElement>) {
             /*否则：交易记录继续转化为新的页面* */
             (
               <div className="mt-5 space-y-4">
-                {filteredTransactions.map((transaction) => (
+                {sortedTransactions.map((transaction) => (
                   <article
                     key={transaction.id}
                     className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm"
