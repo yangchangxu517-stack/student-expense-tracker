@@ -63,19 +63,20 @@ export default function Home() {
 
     return [];
   });
-  const [selectedCategory, setSelectedCategory] = useState("All Categories");
+  
+  const [selectedCategory, setSelectedCategory] = useState("All Categories");/**记录用户选了哪个category */
 
-  const totalExpenses = transactions
+  const totalExpenses = transactions        /*自动计算每月支出 */
     .filter((transaction) => transaction.type === "Expense")
     .reduce((total, transaction) => total + transaction.amount, 0);
 
-  const totalIncome = transactions
+  const totalIncome = transactions               /**自动计算每月收入 */
     .filter((transaction) => transaction.type === "Income")
     .reduce((total, transaction) => total + transaction.amount, 0);
 
-  const remainingBudget = totalIncome - totalExpenses;
+  const remainingBudget = totalIncome - totalExpenses;   /**自动计算剩余预算 */
 
-  const filteredTransactions =
+  const filteredTransactions =                          /**过滤出selectedCategory的transaction */
     selectedCategory === "All Categories"
       ? transactions
       : transactions.filter(
@@ -379,6 +380,10 @@ function handleAddTransaction(event: FormEvent<HTMLFormElement>) {
             (
               <p className="mt-4 rounded-lg border border-dashed border-slate-300 bg-white px-4 py-5 text-slate-600">
                 No transactions added yet.
+              </p>
+            ) : filteredTransactions.length === 0 ? (
+              <p className="mt-4 rounded-lg border border-dashed border-slate-300 bg-white px-4 py-5 text-slate-600">
+                No transactions found for this category.
               </p>
             ) : 
             
