@@ -371,7 +371,13 @@ function handleAddTransaction(event: FormEvent<HTMLFormElement>) {
                   >
                     <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                       <div>
-                        <p className="text-sm font-semibold text-emerald-700">
+                        <p
+                          className={`text-sm font-semibold ${
+                            transaction.type === "Income"
+                              ? "text-emerald-700"
+                              : "text-red-600"
+                          }`}
+                        >
                           {transaction.type}
                         </p>
                         <h3 className="mt-1 text-lg font-bold text-slate-950">
@@ -388,7 +394,13 @@ function handleAddTransaction(event: FormEvent<HTMLFormElement>) {
                       </div>
 
                       <div className="flex items-center gap-3">
-                        <p className="text-2xl font-bold text-slate-950">
+                        <p
+                          className={`text-2xl font-bold ${
+                            transaction.type === "Income"
+                              ? "text-emerald-700"
+                              : "text-red-600"
+                          }`}
+                        >
                           €{transaction.amount.toFixed(2)}
                         </p>
                         
