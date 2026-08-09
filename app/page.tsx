@@ -165,6 +165,11 @@ function handleAddTransaction(event: FormEvent<HTMLFormElement>) {
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
               <button
                 type="button"
+                onClick={() =>
+                  document
+                    .getElementById("add-transaction")
+                    ?.scrollIntoView({ behavior: "smooth" })
+                }
                 className="rounded-lg bg-emerald-600 px-6 py-3 text-base font-semibold text-white shadow-sm shadow-emerald-900/20 transition hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
               >
                 Start Tracking
@@ -242,7 +247,10 @@ function handleAddTransaction(event: FormEvent<HTMLFormElement>) {
         </div>
       </section>
 
-      <section className="bg-slate-50 px-6 py-16 sm:px-8 lg:px-10">
+      <section
+        id="add-transaction"
+        className="bg-slate-50 px-6 py-16 sm:px-8 lg:px-10"
+      >
         <div className="mx-auto max-w-6xl">
           <div className="max-w-2xl">
             <p className="text-sm font-semibold uppercase tracking-wide text-emerald-700">
@@ -376,11 +384,12 @@ function handleAddTransaction(event: FormEvent<HTMLFormElement>) {
             
             {transactions.length === 0 ? 
             
-            /*若长度为0* */
+            /*若总长度为0* */
             (
               <p className="mt-4 rounded-lg border border-dashed border-slate-300 bg-white px-4 py-5 text-slate-600">
                 No transactions added yet.
               </p>
+              /*若筛选条件下的条件为0* */
             ) : filteredTransactions.length === 0 ? (
               <p className="mt-4 rounded-lg border border-dashed border-slate-300 bg-white px-4 py-5 text-slate-600">
                 No transactions found for this category.
