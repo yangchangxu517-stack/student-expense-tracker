@@ -1,5 +1,7 @@
 # Student Expense Tracker Ireland
 
+Live Demo: https://student-expense-tracker-gamma.vercel.app/
+
 A simple budgeting web application built for students living in Ireland.  
 The app helps users record income and expenses, view monthly totals, filter transactions by category, and sort their spending history.
 
