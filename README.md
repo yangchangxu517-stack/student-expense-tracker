@@ -1,36 +1,71 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Student Expense Tracker Ireland
 
-## Getting Started
+## Project Overview
 
-First, run the development server:
+Student Expense Tracker Ireland is a simple budgeting app built for students in Ireland. It helps users record income and expense transactions, review monthly totals, and understand their remaining budget.
+
+This project was built as a portfolio project for CV and internship applications. It focuses on core frontend development skills, including React state management, form handling, conditional rendering, localStorage persistence, and responsive styling with Tailwind CSS.
+
+## Features
+
+- Add income and expense transactions
+- Delete individual transactions
+- Clear all transactions
+- Confirmation prompts before deleting a transaction or clearing all transactions
+- Save transactions in localStorage so they stay after page refresh
+- Calculate monthly income, monthly expenses, and remaining budget
+- Filter transactions by category
+- Show an empty message when no transactions match the selected category
+- Sort transactions by newest, oldest, highest amount, and lowest amount
+- Add sample student transactions using the View Example button
+- Scroll to the transaction form using the Start Tracking button
+- Display a dynamic current month title in the budget preview
+- Use different colors for income and expense transactions
+
+## Tech Stack
+
+- Next.js
+- React
+- TypeScript
+- Tailwind CSS
+- localStorage
+- Git and GitHub
+
+## How to Run Locally
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Start the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then open the local development URL shown in the terminal, usually:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+http://localhost:3000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## What I Learned
 
-## Learn More
+- How to build a client-side interactive page in Next.js
+- How to manage form data using React and TypeScript
+- How to store and update a list of transactions with `useState`
+- How to persist data in the browser with localStorage
+- How to calculate totals from an array of objects
+- How to filter and sort displayed data without changing the original data
+- How to use conditional rendering for empty states and confirmation flows
+- How to style a clean, responsive interface with Tailwind CSS
 
-To learn more about Next.js, take a look at the following resources:
+## Future Improvements
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Edit existing transactions
+- Add monthly filtering
+- Add charts
+- Add user authentication
+- Connect to a database

@@ -65,7 +65,7 @@ export default function Home() {
   });
   
   const [selectedCategory, setSelectedCategory] = useState("All Categories");/**记录用户选了哪个category */
-  const [selectedSort, setSelectedSort] = useState("Newest First");
+  const [selectedSort, setSelectedSort] = useState("Newest First");  /**记录排序方式 默认为Newest First */
 
   const totalExpenses = transactions        /*自动计算每月支出 */
     .filter((transaction) => transaction.type === "Expense")
@@ -210,10 +210,17 @@ function handleAddTransaction(event: FormEvent<HTMLFormElement>) {
       },
     ];
 
-    setTransactions((currentTransactions) => [
-      ...exampleTransactions,
-      ...currentTransactions,
-    ]);
+    if (transactions.length > 0) {
+      const confirmed = window.confirm(
+        "Replace current transactions with example data?"
+      );
+
+      if (!confirmed) {
+        return;
+      }
+    }
+
+    setTransactions(exampleTransactions);
   }
 
   return (
